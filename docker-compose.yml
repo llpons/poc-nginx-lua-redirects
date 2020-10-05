@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  nginx:
+    # image: openresty/openresty:alpine
+    build:
+      # Image `alpine-fat` (for build) is only needed to install `pgmoon`
+      context: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./websites/:/srv/websites
+    depends_on:
+      - postgres
+      - redis
+      - proxied-website
+
+  postgres:
+    image: postgres:12.4
+    ports:
+      - 5432:5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_USER=lua
+      - POSTGRES_PASSWORD=mysecret
+      - POSTGRES_DB=urldb
+    volumes:
+      - ./postgres/initdb.d:/docker-entrypoint-initdb.d/
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+
+  proxied-website:
+    image: nginx:1.19-alpine
+    ports:
+      - 8000:80
+    volumes:
+      - ./websites/postgres:/usr/share/nginx/html

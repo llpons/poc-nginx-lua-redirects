@@ -1,0 +1,6 @@
+var/**
+.ash_history*
+.bash_history*
+.local
+.cache
+.pytest_cache

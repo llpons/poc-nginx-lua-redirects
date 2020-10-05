@@ -1,0 +1,16 @@
+# Folders
+.cache
+.local
+.idea
+.env
+.DS_Store
+.pytest_cache
+.vscode
+.*.json
+node_modules
+
+# Shell files
+.ashrc
+.ash_history*
+.bashrc
+.bash_history*
